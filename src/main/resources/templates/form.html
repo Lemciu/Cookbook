@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj przepis</title>
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css}" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="style.css">
+</head>
+<body>
+<div th:replace="fragments :: nav"></div>
+<div class="center">
+    <div class="content">
+        <div class="formRecipe">
+            <form action="/save" method="post" th:object="${recipeToEdit}">
+                <p>Podaj nazwę dania</p>
+                <input type="text" th:field="*{title}" class="inputText">
+                <p>Podaj kategorie</p>
+                <div class="categoryCheckbox">
+                    <input type="checkbox" class="form-check-input mt-0" th:each="category: ${categories}"
+                           th:id="categoryCheckbox" th:text="${category.name}"
+                           th:value="${category.id}" th:name="categoriesId"
+                           th:checked="${recipeToEdit.itHasCategory(category.value)}">
+                </div>
+                <p>Podaj krótki opis dania</p>
+                <textarea th:field="*{description}" rows="3" class="inputText"></textarea>
+                <input th:hidden="hidden" th:field="*{likes}">
+                <p>Podaj sposób przygotowania</p>
+                <textarea th:field="*{preparation}" rows="5" class="inputText"></textarea>
+                <p>Wymień składniki oddzielając je przecinkiem</p>
+                <textarea th:field="*{ingredients}" rows="4" class="inputText"></textarea>
+                <input th:hidden="hidden" th:name="id" th:value="*{id}">
+                <p>Opcjonalnie możesz też dodać zdjęcie gotowej potrawy (wklej link)</p>
+                <input th:type="text" th:field="*{imgLink}" class="inputText"></br>
+                <input type="submit" class="btn btn-primary" id="saveButton" th:value="Zapisz">
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments :: footer"></div>
+</body>
+</html>

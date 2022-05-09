@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${recipe.title}"></title>
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css}" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="style.css">
+</head>
+<body>
+<div th:replace="fragments :: nav"></div>
+<div class="center">
+    <div class="content">
+        <div class="ingredients">
+            <ul class="list-group" th:each="ingredient: ${recipe.ingredients}">
+                <li class="list-group-item" th:text="${ingredient}"></li>
+            </ul>
+        </div>
+        <div class="preparation">
+            <img th:src="${recipe.imgLink}">
+            <h2 th:text="${recipe.title}"></h2>
+            <p th:text="${recipe.description}"></p>
+            <h3>Przygotowanie:</h3>
+            <p th:text="${recipe.preparation}"></p>
+            <div class="likeIt">
+                <p>Podobał Ci się ten przepis? Kliknij łapkę w górę</p>
+                <form action="/like" method="post" th:object="${recipe}">
+                    <input th:hidden="hidden" th:name="id" th:value="*{id}">
+                    <button class="btn" th:href="@{/like}" id="likeButton" th:name="id" th:value="*{id}"><img
+                            src="https://img.icons8.com/external-kmg-design-detailed-outline-kmg-design/64/000000/external-like-feedback-kmg-design-detailed-outline-kmg-design.png"/>
+                    </button>
+                </form>
+            </div>
+            <p th:text="'Ten przepis podobał się ' + ${recipe.likes} + ' osobom'"></p>
+            <p>Tobie się nie podobał? <a th:href="@{'edit-recipe?id=' + ${recipe.id}}" th:name="id">Edytuj</a>
+                go lub <a th:href="@{'delete?id=' + ${recipe.id}}" th:name="id">usuń</a></p>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments :: footer"></div>
+</body>
+</html>
